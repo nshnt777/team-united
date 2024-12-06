@@ -1,0 +1,127 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User{
+  id          Int     @id @default(autoincrement())
+  username    String  
+  email       String  @unique
+  password    String
+  age         Int?
+  address1    String?
+  address2    String?
+  city        String?
+  state       String?
+  postalCode  String?
+  country     String?
+  latitude    Float?
+  longitude   Float?
+  hobbies     UserHobby[]
+  teams       UserTeam[]
+  messages    Message[]
+}
+
+model Hobby {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
+  users       UserHobby[]
+  teams       Team[]
+  venues      VenueHobby[]
+}
+
+model UserHobby {
+  id          Int  @id @default(autoincrement())
+  user        User @relation(fields: [userId], references: [id])
+  userId      Int
+  
+  hobby       Hobby @relation(fields: [hobbyId], references: [id])
+  hobbyId     Int
+
+  @@unique([userId, hobbyId])
+}
+
+model Team {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String?
+  hobby       Hobby     @relation(fields: [hobbyId], references: [id])
+  hobbyId     Int
+  members     UserTeam[]
+  messages    Message[]
+  bookings    Booking[]
+}
+
+model UserTeam {
+  id          Int  @id @default(autoincrement())
+  user        User @relation(fields: [userId], references: [id])
+  userId      Int
+  
+  team        Team @relation(fields: [teamId], references: [id])
+  teamId      Int
+
+  role        String
+
+  @@unique([userId, teamId])
+}
+
+model Message{
+  id            Int         @id @default(autoincrement())
+  text          String
+  userId        Int
+  teamId        Int
+  createdAt     DateTime    @default(now())
+  user          User  @relation(fields: [userId], references: [id])
+  team          Team  @relation(fields: [teamId], references: [id])
+}
+
+model Venue {
+  id          Int      @id @default(autoincrement())
+  name        String
+  address     String
+  phone       String
+  // location    String   
+  sports      VenueHobby[]
+  slots       VenueSlot[]
+}
+
+model VenueHobby {
+  venueId     Int
+  hobbyId     Int
+  venue       Venue  @relation(fields: [venueId], references: [id])
+  hobby       Hobby  @relation(fields: [hobbyId], references: [id])
+  @@id([venueId, hobbyId])
+}
+
+model Booking {
+  id          Int      @id @default(autoincrement())
+  teamId      Int
+  team        Team     @relation(fields: [teamId], references: [id])
+
+  bookedAt    DateTime  @default(now())
+  slotId      Int       @unique
+  slot        VenueSlot @relation(fields: [slotId], references: [id])
+}
+
+model VenueSlot {
+  id          Int      @id @default(autoincrement())
+  venueId     Int
+  venue       Venue    @relation(fields: [venueId], references: [id])
+
+  date        DateTime
+  startTime   DateTime
+  endTime     DateTime
+  isAvailable Boolean  @default(true)
+
+  booking     Booking?
+}

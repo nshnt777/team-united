@@ -1,0 +1,18 @@
+{
+  "name": "@repo/validation",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "exports": {
+    "./register": "./src/register.ts",
+    "./login": "./src/login.ts",
+    "./address": "./src/address.ts",
+    "./team": "./src/team.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
