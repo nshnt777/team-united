@@ -1,81 +1,115 @@
-# Turborepo starter
+# Team United
 
-This is an official starter Turborepo.
+**Team United** is a sports-based social media platform where users can connect based on shared hobbies and sports interests. The platform enables users to form teams, communicate with teammates, book venues, and participate in local sports activities.
 
-## Using this example
+## Features
 
-Run the following command:
+### User Management
 
-```sh
-npx create-turbo@latest
+- Sign up and log in with ease.
+- Edit your profile with details such as username, email, age, and hobbies.
+
+### Team Collaboration
+
+- Create and join teams based on sports interests.
+- Request to join teams with approval workflows for team leaders.
+- Leave teams you're no longer part of.
+
+### Communication
+
+- **Team Chat:** WhatsApp-like chat interface for seamless communication within teams.
+- Infinite scroll in chat to load messages efficiently while maintaining scroll position.
+
+### Venue Booking
+
+- Explore venues based on your sport preferences.
+- View venue details, including location and available dates/slots.
+- Book venues for your team for specific slots.
+
+### Events and Activities
+
+- Organize and discover local sports events and tournaments.
+- List your team's participation in local championships or activities.
+
+### Popular Teams
+
+- Explore the most popular teams based on member count.
+
+## Tech Stack
+
+- **Frontend:** Next.js (App Router), TypeScript, Tailwind CSS
+- **Backend:** Next.js, Node.js, Prisma ORM
+- **Database:** PostgreSQL
+- **Monorepo:** Turborepo
+
+## Folder Structure
+
+```plaintext
+/ Team United
+├── apps
+│   ├── socket-server (WebSocket server for chatting)
+│   └── user-app (user facing app)
+├── packages
+│   ├── db (Database models and seeding)
+│   ├── ui (Reusable UI components)
+│   └── validation (zod validations) 
+└── README.md
 ```
 
-## What's inside?
+## Installation
 
-This Turborepo includes the following packages/apps:
+### Prerequisites
 
-### Apps and Packages
+- Node.js
+- npm
+- PostgreSQL
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+### Steps
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+1. **Clone the repository:**
 
-### Utilities
+   ```bash
+   git clone https://github.com/nshnt777/team-united.git
+   cd team-united
+   ```
 
-This Turborepo has some additional tools already setup for you:
+2. **Install dependencies:**
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+   ```bash
+   npm install
+   ```
 
-### Build
+3. **Set up environment variables:**<br>
+   Clone the .env.examples file in /packages/db and /apps/user-app, rename them to .env, and and configure the required variables:
 
-To build all apps and packages, run the following command:
+   #### In /packages/db
+   ```plaintext
+   DATABASE_URL=your_database_url
+   ```
 
-```
-cd my-turborepo
-pnpm build
-```
+   #### In /apps/user-apps
+   ```plaintext
+   JWT_SECRET=your_jwt_key
+   NEXTAUTH_URL=your_base_url
+   GEOCODING_API_KEY=your_api_key_from_OpenCage
+   ```
 
-### Develop
+4. **Set up PostgreSQL database:**
 
-To develop all apps and packages, run the following command:
+    - Create a PostgreSQL database.
+        ```CREATE DATABASE team_united;```
+    - Update the DATABASE_URL in /packages/db/.env with your database connection string.
 
-```
-cd my-turborepo
-pnpm dev
-```
+5. **Initialize Prisma:**
+   Navigate to /packages/db and run the following commands:
+    ```bash
+    npx prisma db push
+    npm run seed
+    ```
 
-### Remote Caching
-
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-npx turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+6. **Run the app locally:**
+   ```bash
+   npm run dev
+   ```
+7. **Access the app:**
+   Open http://localhost:3000 in your browser.
